@@ -1,0 +1,11 @@
+Package: coher
+Type: Package
+Title: coheritability estimation
+Version: 1.0
+Date: 2020-02-05
+Author: The-Tien Mai
+Maintainer: The-Tien Mai <t.t.mai@medisin.uio.no>
+Description: coheritability estimation
+License: GPL-2
+Depends: R (>= 3.6.0), glmnet
+
