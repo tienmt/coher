@@ -5,7 +5,7 @@
 coheritability estimation
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+coheritability estimation
 }
 \usage{
 coher(Y, X, a.quantile = 0.25, alpha.enet = 1, para = TRUE)
@@ -13,39 +13,33 @@ coher(Y, X, a.quantile = 0.25, alpha.enet = 1, para = TRUE)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{Y}{
-%%     ~~Describe \code{Y} here~~
+  a named list of phenotypes
 }
   \item{X}{
-%%     ~~Describe \code{X} here~~
+  genotypes matrix
 }
   \item{a.quantile}{
-%%     ~~Describe \code{a.quantile} here~~
+a threshold to remove week correlation covariates, only use with large data set.
 }
   \item{alpha.enet}{
-%%     ~~Describe \code{alpha.enet} here~~
+alpha value in elastic net
 }
   \item{para}{
-%%     ~~Describe \code{para} here~~
+parallel options: TRUE or FALSE
 }
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+na
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+  \item{coher.matrix }{matrix of coheritabilities}
+  \item{coefficients.B }{list of estimated coefficients from elastic-net for each phenotype}
 }
 \references{
-%% ~put references to the literature/web site here ~
+to be filled
 }
 \author{
-%%  ~~who you are~~
-}
-\note{
-%%  ~~further notes~~
+The Tien Mai
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
@@ -118,5 +112,5 @@ function (Y, X, a.quantile = 0.25, alpha.enet = 1, para = TRUE)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }% use one of  RShowDoc("KEYWORDS")
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+%\keyword{ ~kwd1 }% use one of  RShowDoc("KEYWORDS")
+%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
