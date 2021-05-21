@@ -1,47 +1,27 @@
-
-# scan for marginal correlation to remove some covariates
-cor.scale <- function(snp,y){
-  a = snp -mean(snp)
-  b = y - mean(y)
-  abs(a%*%b) / sqrt(sum(a^2)*sum(b^2))
-}
-cor.scale <- compiler::cmpfun(cor.scale)
-
-# fast function to calculate covariance matrix
-cov2 <- function(x)crossprod( scale(x , TRUE ,FALSE ) )/(NROW(x) )
-cov2 <- compiler::cmpfun(cov2)
-
-# checking binary phenos
-checkBinaryTrait <- function(y){
-  if (!is.numeric(y)) stop("Only numeric phenotypes are accepted.")
-  if(length(levels(factor(y) ) ) < 3) print("binomial")
-  else print("continuous")
-}
-checkBinaryTrait <- compiler::cmpfun(checkBinaryTrait)
-
-#' @title coheritability estimation
+#' coher
 #'
 #' @description coheritability estimation
 #'
-#' @param Y,
-#' @param X,
-#' @param a.quantile = 0.25,
-#' @param alpha.enet = 1,
-#' @param para = TRUE
+#' @param Y a list of vectors indicating the values for the phenotypes of intererest for each of the genomes
+#' @param X binary SNP/unitig presence/absence matrix
+#' @param a.quantile (default = 0.25)
+#' @param alpha.enet (default = 1)
+#' @param para (default = TRUE)
 #'
-#' @return
+#' @return a list with the inferred co-heritability matrix and the coefficients of the elastic-net model for each phenotype
 #'
 #' @examples
+#' data('coher_example')
+#' result <- coher(coher_example$Y, coher_example$X)
 #'
-#' @export coher
-coher = function(Y,X,
+#'
+#' @export
+coher = function(Y, X,
                  a.quantile = 0.25,
                  alpha.enet = 1,
                  para = TRUE){
-  library(parallel)
-  require(doMC)
-  registerDoMC(cores=detectCores()-1)
-  library(glmnet)
+
+  doMC::registerDoMC(cores=detectCores()-1)
 
   q = length(Y)
   p = ncol(X)
@@ -55,17 +35,17 @@ coher = function(Y,X,
       sam.cor <- apply(matSNP, 2,function(snp) cor.scale(snp, Y[[j]]) )
       sam.cor[is.na(sam.cor)] = 0
       xsele = matSNP[, sam.cor> quantile(sam.cor, a.quantile)]
-      sk = Matrix(xsele, sparse=T)
+      sk = Matrix::Matrix(xsele, sparse=TRUE)
     }else if(a.quantile ==0){
-      sk = Matrix(X, sparse=T)
+      sk = Matrix::Matrix(X, sparse=TRUE)
     }
     if(checkBinaryTrait(Y[[j]]) == 'binomial' ){
-      enet <- cv.glmnet(x= sk, y= Y[[j]] ,
+      enet <- glmnet::cv.glmnet(x= sk, y= Y[[j]] ,
                         parallel = para,
                         alpha = alpha.enet,
                         family='binomial')
     }else{
-      enet <- cv.glmnet(x= sk, y= Y[[j]] ,
+      enet <- glmnet::cv.glmnet(x= sk, y= Y[[j]] ,
                         parallel = para,
                         alpha = alpha.enet)
     }
@@ -89,8 +69,22 @@ coher = function(Y,X,
       mat.coher[j,i] = bhat[[i]][selected.snps] %*% covariance.selesnps %*% bhat[[j]][selected.snps]/ sqrt(bhat[[i]][selected.snps] %*% covariance.selesnps %*% bhat[[i]][selected.snps] * bhat[[j]][selected.snps] %*% covariance.selesnps %*% bhat[[j]][selected.snps]  )
     }
   }
-  return(coher.matrix = mat.coher, coefficients.B = bhat)
+  return(list(coher.matrix = mat.coher, coefficients.B = bhat))
 }
-coher <- compiler::cmpfun(coher)
 
+# scan for marginal correlation to remove some covariates
+cor.scale <- function(snp,y){
+  a = snp -mean(snp)
+  b = y - mean(y)
+  abs(a%*%b) / sqrt(sum(a^2)*sum(b^2))
+}
 
+# fast function to calculate covariance matrix
+cov2 <- function(x) Matrix::crossprod( scale(x , TRUE ,FALSE ) )/(NROW(x) )
+
+# checking binary phenos
+checkBinaryTrait <- function(y){
+  if (!is.numeric(y)) stop("Only numeric phenotypes are accepted.")
+  if(length(levels(factor(y) ) ) < 3) print("binomial")
+  else print("continuous")
+}

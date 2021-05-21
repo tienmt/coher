@@ -7,5 +7,10 @@ Author: The-Tien Mai
 Maintainer: The-Tien Mai <t.t.mai@medisin.uio.no>
 Description: coheritability estimation
 License: GPL-2
-Depends: R (>= 3.6.0), glmnet
-
+Depends: R (>= 3.6.0)
+Imports: 
+    Matrix,
+    parallel,
+    doMC,
+    glmnet
+RoxygenNote: 7.1.0
