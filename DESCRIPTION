@@ -12,5 +12,11 @@ Imports:
     Matrix,
     parallel,
     doMC,
-    glmnet
+    glmnet,
+    vcfR
+Suggests:
+    ggplot2,
+    knitr,
+    rmarkdown
 RoxygenNote: 7.1.0
+VignetteBuilder: knitr
