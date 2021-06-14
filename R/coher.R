@@ -58,10 +58,10 @@ coher = function(Y, X,
   }
   selected.snps = unique(selected.snps )
 
-  # colculate the covariance matrix
+  # calculate the covariance matrix
   covariance.selesnps = cov2(X[,selected.snps] )
 
-  #colculate the cohers
+  #calculate the cohers
   mat.coher = matrix(0,nr=q,nc=q, dimnames = list(names(Y),names(Y)) )
   for (i in 1:(q-1)){
     for (j in (i+1):q){

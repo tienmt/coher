@@ -12,5 +12,8 @@ Imports:
     Matrix,
     parallel,
     doMC,
-    glmnet
+    glmnet,
+    vcfR
+Suggests:
+  ggplot2
 RoxygenNote: 7.1.0
