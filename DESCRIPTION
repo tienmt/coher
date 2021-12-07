@@ -4,7 +4,7 @@ Title: coheritability estimation
 Version: 1.0
 Date: 2020-02-05
 Author: The-Tien Mai; Gerry Tonkin-Hill
-Maintainer: The-Tien Mai <t.t.mai@medisin.uio.no>
+Maintainer: The-Tien Mai <the.t.mai@ntnu.no>
 Description: coheritability estimation
 License: GPL-2
 Depends: R (>= 3.6.0)
